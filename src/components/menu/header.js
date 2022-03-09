@@ -3,7 +3,8 @@ import Breakpoint, { BreakpointProvider, setDefaultBreakpoints } from "react-soc
 //import { header } from 'react-bootstrap';
 import { Link } from '@reach/router';
 import useOnclickOutside from "react-cool-onclickoutside";
-
+import { useStoneContext } from '../../hooks/useStoneContext';
+import { toShortAddress } from '../../core/helper';
 
 setDefaultBreakpoints([
   { xs: 0 },
@@ -27,87 +28,30 @@ const NavLink = props => (
 
 
 const Header = function({ className }) {
-
-    const [openMenu, setOpenMenu] = React.useState(false);
-    const [openMenu1, setOpenMenu1] = React.useState(false);
-    const [openMenu2, setOpenMenu2] = React.useState(false);
-    const [openMenu3, setOpenMenu3] = React.useState(false);
-    const handleBtnClick = () => {
-      setOpenMenu(!openMenu);
-    };
-    const handleBtnClick1 = () => {
-      setOpenMenu1(!openMenu1);
-    };
-    const handleBtnClick2 = () => {
-      setOpenMenu2(!openMenu2);
-    };
-    const handleBtnClick3 = () => {
-      setOpenMenu3(!openMenu3);
-    };
-    const closeMenu = () => {
-      setOpenMenu(false);
-    };
-    const closeMenu1 = () => {
-      setOpenMenu1(false);
-    };
-    const closeMenu2 = () => {
-      setOpenMenu2(false);
-    };
-    const closeMenu3 = () => {
-      setOpenMenu3(false);
-    };
-
-    const ref = useOnclickOutside(() => {
-      closeMenu();
-    });
-    const ref1 = useOnclickOutside(() => {
-      closeMenu1();
-    });
-    const ref2 = useOnclickOutside(() => {
-      closeMenu2();
-    });
-    const ref3 = useOnclickOutside(() => {
-      closeMenu3();
-    });
-    
-
     const [showmenu, btn_icon] = useState(false);
     const [showpop, btn_icon_pop] = useState(false);
-    const [shownot, btn_icon_not] = useState(false);
+    const { 
+      isConnected, 
+      account, 
+      connectWallet, 
+      disconnectWallet
+    } = useStoneContext();
     const closePop = () => {
       btn_icon_pop(false);
     };
-    const closeNot = () => {
-      btn_icon_not(false);
-    };
+
     const refpop = useOnclickOutside(() => {
       closePop();
     });
-    const refpopnot = useOnclickOutside(() => {
-      closeNot();
-    });
 
-    useEffect(() => {
-    const header = document.getElementById("myHeader");
-    const totop = document.getElementById("scroll-to-top");
-    const sticky = header.offsetTop;
-    const scrollCallBack = window.addEventListener("scroll", () => {
-        btn_icon(false);
-        if (window.pageYOffset > sticky) {
-          header.classList.add("sticky");
-          totop.classList.add("show");
-          
-        } else {
-          header.classList.remove("sticky");
-          totop.classList.remove("show");
-        } if (window.pageYOffset > sticky) {
-          closeMenu();
-        }
-      });
-      return () => {
-        window.removeEventListener("scroll", scrollCallBack);
-      };
-    }, []);
+    const onHandleConnect = () => {
+      if (isConnected) {
+        disconnectWallet();
+      } else {
+        connectWallet();
+      }
+    }
+
     return (
     <header className={`navbar white ${className}`} id="myHeader">
      <div className='container'>
@@ -195,69 +139,14 @@ const Header = function({ className }) {
 
               <div className='mainside'>
                 <div className='connect-wal'>
-                  <NavLink to="/wallet">Connect Wallet</NavLink>
+                  { account ? 
+                    (<a onClick={onHandleConnect}>{toShortAddress(account)}</a>) :
+                    (<a onClick={onHandleConnect}>Connect Wallet</a>)
+                  }
                 </div>
+              </div>
+              <div className='mainside'>
                 <div className="logout">
-                  <NavLink to="/createOptions">Create</NavLink>
-                  <div id="de-click-menu-notification" className="de-menu-notification" onClick={() => btn_icon_not(!shownot)} ref={refpopnot}>
-                      <div className="d-count">8</div>
-                      <i className="fa fa-bell"></i>
-                      {shownot && 
-                        <div className="popshow">
-                          <div className="de-flex">
-                              <h4>Notifications</h4>
-                              <span className="viewaall">Show all</span>
-                          </div>
-                          <ul>
-                            <li>
-                                <div className="mainnot">
-                                    <img className="lazy" src="../../img/author/author-2.jpg" alt=""/>
-                                    <div className="d-desc">
-                                        <span className="d-name"><b>Mamie Barnett</b> started following you</span>
-                                        <span className="d-time">1 hour ago</span>
-                                    </div>
-                                </div>  
-                            </li>
-                            <li>
-                                <div className="mainnot">
-                                    <img className="lazy" src="../../img/author/author-3.jpg" alt=""/>
-                                    <div className="d-desc">
-                                        <span className="d-name"><b>Nicholas Daniels</b> liked your item</span>
-                                        <span className="d-time">2 hours ago</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="mainnot">
-                                    <img className="lazy" src="../../img/author/author-4.jpg" alt=""/>
-                                    <div className="d-desc">
-                                        <span className="d-name"><b>Lori Hart</b> started following you</span>
-                                        <span className="d-time">18 hours ago</span>
-                                    </div>
-                                </div>    
-                            </li>
-                            <li>
-                                <div className="mainnot">
-                                    <img className="lazy" src="../../img/author/author-5.jpg" alt=""/>
-                                    <div className="d-desc">
-                                        <span className="d-name"><b>Jimmy Wright</b> liked your item</span>
-                                        <span className="d-time">1 day ago</span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="mainnot">
-                                    <img className="lazy" src="../../img/author/author-6.jpg" alt=""/>
-                                    <div className="d-desc">
-                                        <span className="d-name"><b>Karla Sharp</b> started following you</span>
-                                        <span className="d-time">3 days ago</span>
-                                    </div>
-                                </div>    
-                            </li>
-                        </ul>
-                        </div>
-                        }
-                  </div>
                   <div id="de-click-menu-profile" className="de-menu-profile" onClick={() => btn_icon_pop(!showpop)} ref={refpop}>                           
                       <img src="../../img/author_single/author_thumbnail.jpg" alt=""/>
                       {showpop && 
@@ -285,11 +174,6 @@ const Header = function({ className }) {
                             <li>
                               <span>
                                 <i className="fa fa-pencil"></i> Edit profile
-                              </span>
-                            </li>
-                            <li>
-                              <span>
-                                <i className="fa fa-sign-out"></i> Sign out
                               </span>
                             </li>
                           </ul>

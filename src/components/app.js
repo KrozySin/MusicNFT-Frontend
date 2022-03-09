@@ -3,6 +3,7 @@ import { Router, Location, Redirect } from '@reach/router';
 import ScrollToTopBtn from './menu/ScrollToTop';
 import Header from './menu/header';
 import Home from './pages/home/';
+import { StoneProvider } from './provider';
 
 import { createGlobalStyle } from 'styled-components';
 
@@ -32,17 +33,19 @@ const PosedRouter = ({ children }) => (
 );
 
 const app= () => (
-  <div className="wraper">
-  <GlobalStyles />
-    <Header/>
+  <StoneProvider>
+    <div className="wraper">
+      <GlobalStyles />
+      <Header/>
       <PosedRouter>
-      <ScrollTop path="/">
-        <Home exact path="/">
-          <Redirect to="/home" />
-        </Home>
-      </ScrollTop>
+        <ScrollTop path="/">
+          <Home exact path="/">
+            <Redirect to="/home" />
+          </Home>
+        </ScrollTop>
       </PosedRouter>
-    <ScrollToTopBtn />
-  </div>
+      <ScrollToTopBtn />
+    </div>
+  </StoneProvider>
 );
 export default app;

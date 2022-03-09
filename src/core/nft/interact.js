@@ -1,4 +1,5 @@
 import { pinJSONToIPFS } from "./pinata.js";
+import Web3 from 'web3';
 require("dotenv").config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const contractABI = require("./contract-abi.json");
@@ -16,6 +17,7 @@ export const connectWallet = async () => {
         status: "Metamask successfuly connected.",
         address: addressArray[0],
       };
+      window.localStorage.setItem("connected", 1);
       return obj;
     } catch (err) {
       return {
@@ -42,13 +44,28 @@ export const connectWallet = async () => {
   }
 };
 
-export const getCurrentWalletConnected = async () => {
+export const disconnectWallet = () => {
+  window.localStorage.setItem("connected", 0);
+}
+
+
+export const getCurrentWalletConnected = async (disconnect, accountChanged) => {
+  const connected = window.localStorage.getItem("connected");
+  if (connected != 1) {
+    return {
+      address: "",
+      status: "🦊 Connect to Metamask using the top right button.",
+    };
+  }
   if (window.ethereum) {
     try {
       const addressArray = await window.ethereum.request({
         method: "eth_accounts",
       });
       if (addressArray.length > 0) {
+        Web3.givenProvider.on('disconnect', disconnect);
+        Web3.givenProvider.on('accountsChanged', accountChanged);
+
         return {
           address: addressArray[0],
           status: "Fill in the text-field above.",
