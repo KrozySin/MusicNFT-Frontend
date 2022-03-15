@@ -57,132 +57,129 @@ const Header = function({ className }) {
      <div className='container'>
        <div className='row w-100-nav'>
           <div className='logo px-0'>
-              <div className='navbar-title navbar-item'>
-                <NavLink to="/">
+            <div className='navbar-title navbar-item'>
+              <NavLink to="/">
+              <img
+                  src="/img/logo.png"
+                  className="img-fluid d-block"
+                  alt="#"
+                />
                 <img
-                    src="/img/logo.png"
-                    className="img-fluid d-block"
-                    alt="#"
-                  />
-                  <img
-                    src="/img/logo-2.png"
-                    className="img-fluid d-3"
-                    alt="#"
-                  />
-                  <img
-                    src="/img/logo-3.png"
-                    className="img-fluid d-4"
-                    alt="#"
-                  />
-                  <img
-                    src="/img/logo-light.png"
-                    className="img-fluid d-none"
-                    alt="#"
-                  />
-                </NavLink>
-              </div>
+                  src="/img/logo-2.png"
+                  className="img-fluid d-3"
+                  alt="#"
+                />
+                <img
+                  src="/img/logo-3.png"
+                  className="img-fluid d-4"
+                  alt="#"
+                />
+                <img
+                  src="/img/logo-light.png"
+                  className="img-fluid d-none"
+                  alt="#"
+                />
+              </NavLink>
+            </div>
           </div>
 
           <div className='search'>
             <input id="quick_search" className="xs-hide" name="quick_search" placeholder="search item here..." type="text" />
           </div>
                     
-              <BreakpointProvider>
-                <Breakpoint l down>
-                  {showmenu && 
-                  <div className='menu'>
-                    <div className='navbar-item'>
-                      <NavLink to="/">
-                      Home
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                    <div className='navbar-item'>
-                      <NavLink to="/mint">
-                      New Music
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                    <div className='navbar-item'>
-                      <NavLink to="/market">
-                      Market
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                  </div>
-                  }
-                </Breakpoint>
-
-                <Breakpoint xl>
-                  <div className='menu'>
-                    <div className='navbar-item'>
-                      <NavLink to="/">
-                      Home
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                    <div className='navbar-item'>
-                      <NavLink to="/mint">
-                      New Music
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                    <div className='navbar-item'>
-                      <NavLink to="/market">
-                      Market
-                      <span className='lines'></span>
-                      </NavLink>
-                    </div>
-                  </div>
-                </Breakpoint>
-              </BreakpointProvider>
-
-              <div className='mainside'>
-                <div className='connect-wal'>
-                  { account ? 
-                    (<a onClick={onHandleConnect}>{toShortAddress(account)}</a>) :
-                    (<a onClick={onHandleConnect}>Connect Wallet</a>)
-                  }
+          <BreakpointProvider>
+            <Breakpoint l down>
+              {showmenu && 
+              <div className='menu'>
+                <div className='navbar-item'>
+                  <NavLink to="/">
+                  Home
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                <div className='navbar-item'>
+                  <NavLink to="/mint">
+                  New Music
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                <div className='navbar-item'>
+                  <NavLink to="/market">
+                  Market
+                  <span className='lines'></span>
+                  </NavLink>
                 </div>
               </div>
-              <div className='mainside'>
-                <div className="logout">
-                  <div id="de-click-menu-profile" className="de-menu-profile" onClick={() => btn_icon_pop(!showpop)} ref={refpop}>                           
-                      <img src="../../img/author_single/author_thumbnail.jpg" alt=""/>
-                      {showpop && 
-                        <div className="popshow">
-                          <div className="d-name">
-                              <h4>Monica Lucas</h4>
-                              <span className="name" onClick={()=> window.open("", "_self")}>Set display name</span>
-                          </div>
-                          <div className="d-balance">
-                              <h4>Balance</h4>
-                              12.858 ETH
-                          </div>
-                          <div className="d-wallet">
-                              <h4>My Wallet</h4>
-                              <span id="wallet" className="d-wallet-address">DdzFFzCqrhshMSxb9oW3mRo4MJrQkusV3fGFSTwaiu4wPBqMryA9DYVJCkW9n7twCffG5f5wX2sSkoDXGiZB1HPa7K7f865Kk4LqnrME</span>
-                              <button id="btn_copy" title="Copy Text">Copy</button>
-                          </div>
-                          <div className="d-line"></div>
-                          <ul className="de-submenu-profile">
-                            <li>
-                              <span>
-                                <i className="fa fa-user"></i> My profile
-                              </span>
-                            </li>
-                            <li>
-                              <span>
-                                <i className="fa fa-pencil"></i> Edit profile
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                      }
-                  </div>
+              }
+            </Breakpoint>
+
+            <Breakpoint xl>
+              <div className='menu'>
+                <div className='navbar-item'>
+                  <NavLink to="/">
+                  Home
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                {account &&
+                <div className='navbar-item'>
+                  <NavLink to="/mint">
+                  New Music
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                }
+                <div className='navbar-item'>
+                  <NavLink to="/market">
+                  Market
+                  <span className='lines'></span>
+                  </NavLink>
                 </div>
               </div>
-                  
+            </Breakpoint>
+          </BreakpointProvider>
+
+          <div className='mainside'>
+            <div className='connect-wal'>
+              { account ? 
+                (<a onClick={onHandleConnect}>{toShortAddress(account)}</a>) :
+                (<a onClick={onHandleConnect}>Connect Wallet</a>)
+              }
+            </div>
+          </div>
+          { account &&
+          <div className='mainside'>
+            <div id="de-click-menu-profile" className="de-menu-profile" onClick={() => btn_icon_pop(!showpop)} ref={refpop}>                           
+              <img src="../../img/author_single/author_thumbnail.jpg" alt=""/>
+              {showpop && 
+                <div className="popshow">
+                  <div className="d-name">
+                      <h4>Unknown</h4>
+                      <span className="name" onClick={()=> window.open("", "_self")}>Set display name</span>
+                  </div>
+                  <div className="d-wallet">
+                      <h4>My Wallet</h4>
+                      <span id="wallet" className="d-wallet-address">{account}</span>
+                      <button id="btn_copy" title="Copy Text">Copy</button>
+                  </div>
+                  <div className="d-line"></div>
+                  <ul className="de-submenu-profile">
+                    <li>
+                      <span>
+                        <i className="fa fa-user"></i> My profile
+                      </span>
+                    </li>
+                    <li>
+                      <span>
+                        <i className="fa fa-pencil"></i> Edit profile
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              }
+            </div>
+          </div>
+          }
       </div>
 
         <button className="nav-icon" onClick={() => btn_icon(!showmenu)}>

@@ -186,6 +186,15 @@ section{
     } 
   }
 }
+
+.ipfs-uploading .btn {
+  border-radius: 10px;
+  background: $color;
+  &::before{
+    z-index: 0;
+  }
+}
+
 .shine {
   content: '';
   position: absolute !important;
@@ -4893,6 +4902,7 @@ blockquote {
       -webkit-border-radius: 30px;
       margin-left: 5px;
       margin-bottom: 2px;
+      border: solid 2px #8364E2;
     }
     .popshow{
     cursor: default;

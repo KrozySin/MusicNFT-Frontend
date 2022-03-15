@@ -130,8 +130,9 @@ export const checkSign = async (text, signature, account) => {
 } */
 
 export const sendTransaction = async (transaction, account) => {
-  return transaction.estimateGas({ from: account })
-  .then(async (gasAmount) => { 
-    return transaction.send({ from: account, gas: gasAmount })
-  })
+  const gasAmount = await transaction.estimateGas({ from: account })
+  const web3 = new Web3(Web3.givenProvider)
+  const gasPrice = await web3.eth.getGasPrice()
+  
+  return transaction.send({ from: account, gas: gasAmount, gasPrice: gasPrice })
 }

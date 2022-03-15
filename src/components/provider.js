@@ -8,6 +8,7 @@ export const StoneProvider = ({children}) => {
     const [account, setAccount] = useState()
     const [web3, setWeb3] = useState(new Web3())
     const [isConnected, setIsConnected] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
 
     const getWeb3 = async () => {
         const provider = await WalletUtils.getCurrentProvider()
@@ -72,9 +73,11 @@ export const StoneProvider = ({children}) => {
             web3,
             account,
             isConnected,
+            isLoading,
             disconnectWallet,
             connectWallet,
-            updateConnect
+            updateConnect,
+            setIsLoading
         }}>
             {children}
         </StoneContext.Provider>
