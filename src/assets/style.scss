@@ -2097,6 +2097,10 @@ address {
     border-radius: 10px;
     border: dashed 3px #dddddd;
     text-align: center;
+    min-height: 230px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
     #get_file{
       margin: 0 auto;
     }
@@ -2121,6 +2125,11 @@ address {
         }
       }
     }
+    
+}
+
+.d-create-file p {
+  overflow-wrap: break-word;
 }
 
 /*** activity ***/

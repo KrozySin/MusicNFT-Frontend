@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 
 import Clock from "../../components/Clock";
@@ -55,10 +55,20 @@ const GlobalStyles = createGlobalStyle`
 
 const Createpage = () => {
   const nft = useNFT();
+  
   const { account, setIsLoading } = useStoneContext();
-  const [files, setFiles] = useState([]);
+
+  const [audioSource, setAudioSource] = useState(null);
+
+  const [audio, setAudio] = useState(undefined);
+  const [image, setImage] = useState(undefined);
+  const [sheet, setSheet] = useState(undefined);
+
+  const [audioUrl, setAudioUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [sheetUrl, setSheetUrl] = useState('');
+
   const [playing, setPlaying] = useState(false);
-  const [urls, setUrls] = useState([]);
 
   const [title, setTitle] = useState('');
   const [tokenId, setTokenId] = useState(0);
@@ -66,21 +76,53 @@ const Createpage = () => {
       
   const toggle = () => setPlaying(!playing);
 
-  const onChange = (e) => {
+  useEffect(() => {
+    setAudioSource(new Audio(audioUrl));
+  }, [audioUrl]);
+
+  useEffect(() => {
+    if (audioSource === null) return;
+    if (playing === true) {
+      audioSource.play();
+    } else {
+      audioSource.pause();
+    }
+  }, [playing, audioSource])
+
+  const onChangeAudio = (e) => {
     var filesTmp = e.target.files;
     if (!filesTmp.length > 0) return;
-    console.log(filesTmp[0]);
 
     let reader = new FileReader();
-    reader.onloadend = () => saveFileToPinata(filesTmp[0], filesTmp[0].name);
+    reader.onloadend = () => saveFileToPinata(filesTmp[0], filesTmp[0].name, setAudioUrl);
     reader.readAsDataURL(filesTmp[0]);
-
-    var filesArr = Array.prototype.slice.call(filesTmp);
-    document.getElementById("file_name").style.display = "none";
-    setFiles([...files, ...filesArr]);
+    document.getElementById("audio_name").style.display = "none";
+    setAudio(filesTmp[0])
   }
 
-  const saveFileToPinata = (data, name) => {
+  const onChangeImage = (e) => {
+    var filesTmp = e.target.files;
+    if (!filesTmp.length > 0) return;
+
+    let reader = new FileReader();
+    reader.onloadend = () => saveFileToPinata(filesTmp[0], filesTmp[0].name, setImageUrl);
+    reader.readAsDataURL(filesTmp[0]);
+    document.getElementById("image_name").style.display = "none";
+    setImage(filesTmp[0])
+  }
+
+  const onChangeSheet = (e) => {
+    var filesTmp = e.target.files;
+    if (!filesTmp.length > 0) return;
+
+    let reader = new FileReader();
+    reader.onloadend = () => saveFileToPinata(filesTmp[0], filesTmp[0].name, setSheetUrl);
+    reader.readAsDataURL(filesTmp[0]);
+    document.getElementById("sheet_name").style.display = "none";
+    setSheet(filesTmp[0])
+  }
+
+  const saveFileToPinata = (data, name, func) => {
     const options = {
       pinataMetadata: {
         name: name
@@ -92,13 +134,17 @@ const Createpage = () => {
 
     pinFileToIPFS(data, options.pinataMetadata, options.pinataOptions)
     .then(res => {
-      const tempArr = [...urls];
-      tempArr.push(res.pinataUrl);
-      setUrls(tempArr);
+      func(res.pinataUrl);
     });
   }
 
   const mintToken = () => {
+    const urls = [];
+
+    urls.push(audioUrl);
+    urls.push(imageUrl);
+    urls.push(sheetUrl);
+
     const metadata = {
       title: title,
       description: description,
@@ -145,22 +191,56 @@ const Createpage = () => {
         <div className="col-lg-7 offset-lg-1 mb-5">
             <form id="form-create-item" className="form-border" action="#">
                 <div className="field-set">
-                    <h5>Upload main audio file</h5>
+                    <div className="row">
+                      <div className="col-lg-4 mb-5">
+                        <h5>Main audio file</h5>
 
-                    <div className="d-create-file">
-                        {files.length === 0 && 
-                        <p id="file_name">WMV, WAV or MP3. Max 200mb.</p>
-                        }
-                        {files.map(x => 
-                        <p key="{index}">{x.name}</p>
-                        )}
-                        <div className='browse'>
-                          <input type="button" id="get_file" className="btn-main" value="Browse"/>
-                          <input id='upload_file' type="file" accept="audio/*" multiple onChange={onChange} />
+                        <div className="d-create-file">
+                            {!audio ?
+                            (<p id="audio_name">WMV, WAV or MP3. Max 200mb.</p> ) :
+                            (<p key="{index}">{audio.name}</p>)
+                            }
+                            <div className='browse'>
+                              <input type="button" id="get_file" className="btn-main" value="Browse"/>
+                              <input id='upload_file' type="file" accept="audio/*" multiple onChange={onChangeAudio} />
+                            </div>
+                            
                         </div>
-                        
+                      </div>
+
+                      <div className="col-lg-4 mb-5">
+                        <h5>Music thumbnail</h5>
+
+                        <div className="d-create-file">
+                            {!image ? 
+                            (<p id="image_name">PNG, JPG, WPEG. Max 200mb.</p>) :
+                            (<p key="{index}">{image.name}</p>)
+                            }
+                            <div className='browse'>
+                              <input type="button" id="get_file" className="btn-main" value="Browse"/>
+                              <input id='upload_file' type="file" accept="image/*" multiple onChange={onChangeImage} />
+                            </div>
+                            
+                        </div>
+                      </div>
+
+                      <div className="col-lg-4 mb-5">
+                        <h5>Music sheet file</h5>
+
+                        <div className="d-create-file">
+                            {!sheet ? 
+                            (<p id="sheet_name">Max 200mb.</p>) :
+                            (<p key="{index}">{sheet.name}</p>)
+                            }
+                            <div className='browse'>
+                              <input type="button" id="get_file" className="btn-main" value="Browse"/>
+                              <input id='upload_file' type="file" accept="*/*" multiple onChange={onChangeSheet} />
+                            </div>
+                            
+                        </div>
+                      </div>
                     </div>
-                    
+
                     <div className="spacer-single"></div>
 
                     <h5>Token ID</h5>
@@ -223,7 +303,11 @@ const Createpage = () => {
                     </div>
                     <div className="nft__item_wrap">
                         <span>
-                            <img src="./img/gallery/5.jpg" id="get_file_2" className="lazy nft__item_preview" alt=""/>
+                            <img 
+                              src={imageUrl ? imageUrl : "./img/gallery/5.jpg"}
+                              id="get_file_2" 
+                              className="lazy nft__item_preview" 
+                              alt=""/>
                         </span>
                         <div className="nft_type_wrap">
                             <div onClick={toggle} className="player-container">
