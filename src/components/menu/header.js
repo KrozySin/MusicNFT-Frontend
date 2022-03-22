@@ -98,17 +98,27 @@ const Header = function({ className }) {
                   </NavLink>
                 </div>
                 <div className='navbar-item'>
-                  <NavLink to="/mint">
-                  New Music
-                  <span className='lines'></span>
-                  </NavLink>
-                </div>
-                <div className='navbar-item'>
                   <NavLink to="/market">
                   Market
                   <span className='lines'></span>
                   </NavLink>
                 </div>
+                {account &&
+                <div className='navbar-item'>
+                  <NavLink to="/mint">
+                  New Music
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                }
+                {account &&
+                <div className='navbar-item'>
+                  <NavLink to="/mint">
+                  My Album
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
+                }
               </div>
               }
             </Breakpoint>
@@ -121,6 +131,12 @@ const Header = function({ className }) {
                   <span className='lines'></span>
                   </NavLink>
                 </div>
+                <div className='navbar-item'>
+                  <NavLink to="/market">
+                  Market
+                  <span className='lines'></span>
+                  </NavLink>
+                </div>
                 {account &&
                 <div className='navbar-item'>
                   <NavLink to="/mint">
@@ -129,12 +145,14 @@ const Header = function({ className }) {
                   </NavLink>
                 </div>
                 }
+                {account &&
                 <div className='navbar-item'>
-                  <NavLink to="/market">
-                  Market
+                  <NavLink to="/collection">
+                  My Album
                   <span className='lines'></span>
                   </NavLink>
                 </div>
+                }
               </div>
             </Breakpoint>
           </BreakpointProvider>
@@ -142,7 +160,13 @@ const Header = function({ className }) {
           <div className='mainside'>
             <div className='connect-wal'>
               { account ? 
-                (<a onClick={onHandleConnect}>{toShortAddress(account)}</a>) :
+                (
+                  <BreakpointProvider>
+                  <Breakpoint xl>
+                    <a onClick={onHandleConnect}>{toShortAddress(account)}</a>
+                  </Breakpoint>
+                  </BreakpointProvider>
+                ) :
                 (<a onClick={onHandleConnect}>Connect Wallet</a>)
               }
             </div>

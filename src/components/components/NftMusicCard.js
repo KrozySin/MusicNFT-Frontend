@@ -48,21 +48,25 @@ const NftMusicCard = ({ nft, audioUrl, className = 'd-item col-lg-3 col-md-6 col
     return (
         <div className={className}>
             <div className="nft__item m-0">
-                { nft.deadline &&
+                {/* nft.deadline &&
                     <div className="de_countdown">
                         <Clock deadline={nft.deadline} />
                     </div>
-                }
+                */}
                 <div className="author_list_pp">
-                    <span onClick={()=> navigateTo(nft.author_link)}>                                    
-                        <img className="lazy" src={api.baseUrl + nft.author.avatar.url} alt="" style={{width: '50px', height: '50px', objectFit: 'cover'}}/>
+                    <span onClick={()=> {}}>                                    
+                        <img className="lazy" src="/mock_data/uploads/author_1_6f9ad9e11a.jpg" alt="" style={{width: '50px', height: '50px', objectFit: 'cover'}}/>
                         <i className="fa fa-check"></i>
                     </span>
                 </div>
                 <div className="nft__item_wrap" style={{height: `${height}px`}}>
                     <Outer>
                     <span>
-                        <img onLoad={onImgLoad} src={api.baseUrl + nft.preview_image.url} className="lazy nft__item_preview" alt=""/>
+                        <img 
+                            onLoad={onImgLoad} 
+                            src={nft.thumbnail ? nft.thumbnail : '/img/gallery/5.jpg'} 
+                            className="lazy nft__item_preview" 
+                            alt=""/>
                     </span>
                     </Outer>
                     <div className="nft_type_wrap">
@@ -77,11 +81,7 @@ const NftMusicCard = ({ nft, audioUrl, className = 'd-item col-lg-3 col-md-6 col
                         <h4>{nft.title}</h4>
                     </span>
                     <div className="nft__item_price">
-                        {nft.price} ETH
-                        <span>{nft.bid}/{nft.max_bid}</span>
-                    </div>
-                    <div className="nft__item_action">
-                        <span onClick={() => navigateTo(`${nft.bid_link}/${nft.id}`)}>Place a bid</span>
+                        {nft.description}
                     </div>
                     <div className="nft__item_like">
                         <i className="fa fa-heart"></i><span>{nft.likes}</span>
